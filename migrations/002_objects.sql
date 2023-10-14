@@ -1,0 +1,5 @@
+CREATE TABLE objects (
+    id CHAR(36) NOT NULL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    bucket_id CHAR(36) NOT NULL FOREIGN KEY REFERENCES buckets(id),
+);

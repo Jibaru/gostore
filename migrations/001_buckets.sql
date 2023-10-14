@@ -1,0 +1,5 @@
+CREATE TABLE buckets (
+    id CHAR(36) NOT NULL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    parent_id CHAR(36) NULL FOREIGN KEY REFERENCES buckets(id),
+);
