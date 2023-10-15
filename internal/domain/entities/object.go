@@ -6,14 +6,16 @@ import (
 )
 
 type Object struct {
-	ID       string `gorm:"primaryKey;type:uuid"`
-	Name     string
-	BucketID string `gorm:"type:uuid"`
+	ID        string `gorm:"primaryKey;type:uuid" json:"id"`
+	Name      string `json:"name"`
+	Extension string `json:"extension"`
+	BucketID  string `gorm:"type:uuid" json:"bucket_id"`
 }
 
 func NewObject(
 	id string,
 	name string,
+	extension string,
 	bucketID string,
 ) (*Object, error) {
 	if len(strings.TrimSpace(name)) == 0 {
@@ -24,9 +26,14 @@ func NewObject(
 		return nil, errors.New("bucket id should not be empty")
 	}
 
+	if len(strings.TrimSpace(extension)) == 0 && strings.TrimSpace(extension) != "." {
+		return nil, errors.New("extension should not be empty")
+	}
+
 	return &Object{
-		ID:       id,
-		Name:     name,
-		BucketID: bucketID,
+		ID:        id,
+		Name:      name,
+		Extension: extension,
+		BucketID:  bucketID,
 	}, nil
 }
