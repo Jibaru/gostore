@@ -30,3 +30,7 @@ func NewBucket(
 		ParentID: parentID,
 	}, nil
 }
+
+func (that *Bucket) InRoot() bool {
+	return that.ParentID == nil
+}
