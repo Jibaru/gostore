@@ -50,7 +50,7 @@ func (serv *CreateObjectService) Do(
 		return nil, err
 	}
 
-	object, err := entities.NewObject(objectID, file.Filename, bucket.ID)
+	object, err := entities.NewObject(objectID, file.Filename, extension, bucket.ID)
 	if err != nil {
 		return nil, err
 	}
