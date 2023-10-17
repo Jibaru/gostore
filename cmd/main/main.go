@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/jibaru/gostore/internal/application"
+	"github.com/jibaru/gostore/internal/domain/entities"
 	"github.com/jibaru/gostore/internal/infrastructure/controllers"
 	"github.com/jibaru/gostore/internal/infrastructure/repositories"
 	"github.com/jibaru/gostore/internal/shared"
@@ -22,13 +23,25 @@ func main() {
 		storageFolderName,
 		false,
 	)
-	bucketRepository := repositories.NewRamBucketRepository()
+	filesystem := shared.NewServerFilesystem("./" + storageFolderName)
+
+	buckets := make([]entities.Bucket, 0)
+	buckets = append(buckets, entities.Bucket{
+		ID:       "48fded16-34e8-45df-993d-6c0e39ca0308",
+		Name:     "test",
+		ParentID: nil,
+	})
+	bucketRepository := repositories.NewRamBucketRepository(buckets)
 	objectRepository := repositories.NewRamObjectRepository()
 
-	createBucketServ := application.NewCreateBucketService(bucketRepository)
+	createBucketServ := application.NewCreateBucketService(
+		bucketRepository,
+		filesystem,
+	)
 	createObjectServ := application.NewCreateObjectService(
 		bucketRepository,
 		objectRepository,
+		filesystem,
 	)
 	generateBucketPathServ := application.NewGenerateBucketPathService(
 		bucketRepository,
