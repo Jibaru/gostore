@@ -10,16 +10,15 @@ type RamBucketRepository struct {
 	buckets []entities.Bucket
 }
 
-func NewRamBucketRepository() repositories.BucketRepository {
-	objects := make([]entities.Bucket, 0)
-	objects = append(objects, entities.Bucket{
-		ID:       "48fded16-34e8-45df-993d-6c0e39ca0308",
-		Name:     "test",
-		ParentID: nil,
-	})
-
+func NewEmptyRamBucketRepository() repositories.BucketRepository {
 	return &RamBucketRepository{
-		buckets: objects,
+		make([]entities.Bucket, 0),
+	}
+}
+
+func NewRamBucketRepository(buckets []entities.Bucket) repositories.BucketRepository {
+	return &RamBucketRepository{
+		buckets,
 	}
 }
 
