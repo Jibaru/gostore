@@ -4,18 +4,21 @@ import (
 	"github.com/google/uuid"
 	"github.com/jibaru/gostore/internal/domain/entities"
 	"github.com/jibaru/gostore/internal/domain/repositories"
-	"os"
+	"github.com/jibaru/gostore/internal/shared"
 )
 
 type CreateBucketService struct {
 	bucketRepository repositories.BucketRepository
+	filesystem       shared.Filesystem
 }
 
 func NewCreateBucketService(
 	bucketRepository repositories.BucketRepository,
+	filesystem shared.Filesystem,
 ) *CreateBucketService {
 	return &CreateBucketService{
 		bucketRepository,
+		filesystem,
 	}
 }
 
@@ -25,7 +28,8 @@ func (serv *CreateBucketService) Do(
 ) (*entities.Bucket, error) {
 	bucketID := uuid.New().String()
 
-	err := os.Mkdir("./storage/"+bucketID, os.ModePerm)
+	//err := os.Mkdir(serv.storageRootFolder+"/"+bucketID, os.ModePerm)
+	err := serv.filesystem.MakeDirectory(bucketID)
 	if err != nil {
 		return nil, err
 	}
