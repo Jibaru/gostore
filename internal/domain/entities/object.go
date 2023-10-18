@@ -2,6 +2,7 @@ package entities
 
 import (
 	"errors"
+	"github.com/google/uuid"
 	"strings"
 )
 
@@ -18,12 +19,24 @@ func NewObject(
 	extension string,
 	bucketID string,
 ) (*Object, error) {
+	if len(strings.TrimSpace(id)) == 0 {
+		return nil, errors.New("id should not be empty")
+	}
+
+	if _, err := uuid.Parse(id); err != nil {
+		return nil, errors.New("id should be a uuid")
+	}
+
 	if len(strings.TrimSpace(name)) == 0 {
 		return nil, errors.New("name should not be empty")
 	}
 
 	if len(strings.TrimSpace(bucketID)) == 0 {
 		return nil, errors.New("bucket id should not be empty")
+	}
+
+	if _, err := uuid.Parse(bucketID); err != nil {
+		return nil, errors.New("bucket id should be a uuid")
 	}
 
 	if len(strings.TrimSpace(extension)) == 0 && strings.TrimSpace(extension) != "." {
