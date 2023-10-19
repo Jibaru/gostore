@@ -2,15 +2,19 @@ package application
 
 import "github.com/jibaru/gostore/internal/domain/repositories"
 
+type GenerateObjectPathServiceInputPort interface {
+	Do(objectID string) (string, error)
+}
+
 type GenerateObjectPathService struct {
 	objectRepository          repositories.ObjectRepository
-	generateBucketPathService *GenerateBucketPathService
+	generateBucketPathService GenerateBucketPathServiceInputPort
 }
 
 func NewGenerateObjectPathService(
 	objectRepository repositories.ObjectRepository,
-	generateBucketPathService *GenerateBucketPathService,
-) *GenerateObjectPathService {
+	generateBucketPathService GenerateBucketPathServiceInputPort,
+) GenerateObjectPathServiceInputPort {
 	return &GenerateObjectPathService{
 		objectRepository,
 		generateBucketPathService,
@@ -25,7 +29,7 @@ func (serv *GenerateObjectPathService) Do(objectID string) (string, error) {
 
 	path, err := serv.generateBucketPathService.Do(object.BucketID)
 	if err != nil {
-		return "", nil
+		return "", err
 	}
 
 	return path + "/" + objectID + object.Extension, nil
