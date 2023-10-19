@@ -31,8 +31,17 @@ func main() {
 		Name:     "test",
 		ParentID: nil,
 	})
+
+	objects := make([]entities.Object, 0)
+	objects = append(objects, entities.Object{
+		ID:        "4b3622bc-d5ec-4071-927c-b649611cdb18",
+		Name:      "imagen.png",
+		Extension: ".png",
+		BucketID:  "48fded16-34e8-45df-993d-6c0e39ca0308",
+	})
+
 	bucketRepository := repositories.NewRamBucketRepository(buckets)
-	objectRepository := repositories.NewRamObjectRepository()
+	objectRepository := repositories.NewRamObjectRepository(objects)
 
 	createBucketServ := application.NewCreateBucketService(
 		bucketRepository,
