@@ -2,13 +2,17 @@ package application
 
 import "github.com/jibaru/gostore/internal/domain/repositories"
 
+type GenerateBucketPathServiceInputPort interface {
+	Do(bucketID string) (string, error)
+}
+
 type GenerateBucketPathService struct {
 	bucketRepository repositories.BucketRepository
 }
 
 func NewGenerateBucketPathService(
 	bucketRepository repositories.BucketRepository,
-) *GenerateBucketPathService {
+) GenerateBucketPathServiceInputPort {
 	return &GenerateBucketPathService{
 		bucketRepository,
 	}
