@@ -10,15 +10,7 @@ type RamObjectRepository struct {
 	objects []entities.Object
 }
 
-func NewRamObjectRepository() repositories.ObjectRepository {
-	objects := make([]entities.Object, 0)
-	objects = append(objects, entities.Object{
-		ID:        "4b3622bc-d5ec-4071-927c-b649611cdb18",
-		Name:      "imagen.png",
-		Extension: ".png",
-		BucketID:  "48fded16-34e8-45df-993d-6c0e39ca0308",
-	})
-
+func NewRamObjectRepository(objects []entities.Object) repositories.ObjectRepository {
 	return &RamObjectRepository{objects: objects}
 }
 
