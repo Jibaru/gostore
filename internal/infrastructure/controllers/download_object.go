@@ -10,7 +10,7 @@ import (
 
 type DownloadObject struct {
 	urlGenerator              *shared.UrlGenerator
-	generateObjectPathService *application.GenerateObjectPathService
+	generateObjectPathService application.GenerateObjectPathServiceInputPort
 }
 
 type DownloadObjectParams struct {
@@ -19,7 +19,7 @@ type DownloadObjectParams struct {
 
 func NewDownloadObject(
 	urlGenerator *shared.UrlGenerator,
-	generateObjectPathService *application.GenerateObjectPathService,
+	generateObjectPathService application.GenerateObjectPathServiceInputPort,
 ) *DownloadObject {
 	return &DownloadObject{
 		urlGenerator,
