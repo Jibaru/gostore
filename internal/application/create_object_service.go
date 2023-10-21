@@ -11,20 +11,23 @@ import (
 )
 
 type CreateObjectService struct {
-	bucketRepository repositories.BucketRepository
-	objectRepository repositories.ObjectRepository
-	filesystem       shared.Filesystem
+	bucketRepository          repositories.BucketRepository
+	objectRepository          repositories.ObjectRepository
+	filesystem                shared.Filesystem
+	generateBucketPathService GenerateBucketPathServiceInputPort
 }
 
 func NewCreateObjectService(
 	bucketRepository repositories.BucketRepository,
 	objectRepository repositories.ObjectRepository,
 	filesystem shared.Filesystem,
+	generateBucketPathService GenerateBucketPathServiceInputPort,
 ) *CreateObjectService {
 	return &CreateObjectService{
 		bucketRepository,
 		objectRepository,
 		filesystem,
+		generateBucketPathService,
 	}
 }
 
@@ -33,7 +36,10 @@ func (serv *CreateObjectService) Do(
 	bucketID string,
 ) (*entities.Object, error) {
 	objectID := uuid.New().String()
-	bucket, err := serv.bucketRepository.FindByID(bucketID)
+	bucketPath, err := serv.generateBucketPathService.Do(bucketID)
+	if err != nil {
+		return nil, err
+	}
 
 	src, err := file.Open()
 	defer src.Close()
@@ -43,8 +49,7 @@ func (serv *CreateObjectService) Do(
 
 	extension := filepath.Ext(file.Filename)
 
-	// dst, err := os.Create("./storage/" + bucket.ID + "/" + objectID + extension)
-	dst, err := serv.filesystem.MakeFileOnPath(objectID+extension, "/"+bucket.ID)
+	dst, err := serv.filesystem.MakeFileOnPath(objectID+extension, bucketPath)
 	defer dst.Close()
 	if err != nil {
 		return nil, err
@@ -54,7 +59,7 @@ func (serv *CreateObjectService) Do(
 		return nil, err
 	}
 
-	object, err := entities.NewObject(objectID, file.Filename, extension, bucket.ID)
+	object, err := entities.NewObject(objectID, file.Filename, extension, bucketID)
 	if err != nil {
 		return nil, err
 	}
