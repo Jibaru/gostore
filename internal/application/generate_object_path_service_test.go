@@ -17,6 +17,14 @@ func (s *CallableGenerateBucketPathService) Do(bucketID string) (string, error) 
 	return s.onDo(bucketID)
 }
 
+func NewCallableGenerateBucketPathServiceForRootBucket() GenerateBucketPathServiceInputPort {
+	return &CallableGenerateBucketPathService{
+		func(bucketID string) (string, error) {
+			return "/" + bucketID, nil
+		},
+	}
+}
+
 func TestGenerateObjectPathService(t *testing.T) {
 	objectID := uuid.New().String()
 	bucketID := uuid.New().String()
@@ -29,14 +37,10 @@ func TestGenerateObjectPathService(t *testing.T) {
 		BucketID:  bucketID,
 	})
 	objectRepository := repositories.NewRamObjectRepository(objects)
-	bucketPathService := CallableGenerateBucketPathService{
-		onDo: func(bucketID string) (string, error) {
-			return "/" + bucketID, nil
-		},
-	}
+	bucketPathService := NewCallableGenerateBucketPathServiceForRootBucket()
 	service := NewGenerateObjectPathService(
 		objectRepository,
-		&bucketPathService,
+		bucketPathService,
 	)
 	expectedPath := "/" + bucketID + "/" + objectID + extension
 
