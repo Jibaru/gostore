@@ -43,20 +43,22 @@ func main() {
 	bucketRepository := repositories.NewRamBucketRepository(buckets)
 	objectRepository := repositories.NewRamObjectRepository(objects)
 
-	createBucketServ := application.NewCreateBucketService(
-		bucketRepository,
-		filesystem,
-	)
-	createObjectServ := application.NewCreateObjectService(
-		bucketRepository,
-		objectRepository,
-		filesystem,
-	)
 	generateBucketPathServ := application.NewGenerateBucketPathService(
 		bucketRepository,
 	)
 	generateObjectPathServ := application.NewGenerateObjectPathService(
 		objectRepository,
+		generateBucketPathServ,
+	)
+	createBucketServ := application.NewCreateBucketService(
+		bucketRepository,
+		filesystem,
+		generateBucketPathServ,
+	)
+	createObjectServ := application.NewCreateObjectService(
+		bucketRepository,
+		objectRepository,
+		filesystem,
 		generateBucketPathServ,
 	)
 
