@@ -8,17 +8,20 @@ import (
 )
 
 type CreateBucketService struct {
-	bucketRepository repositories.BucketRepository
-	filesystem       shared.Filesystem
+	bucketRepository          repositories.BucketRepository
+	filesystem                shared.Filesystem
+	generateBucketPathService GenerateBucketPathServiceInputPort
 }
 
 func NewCreateBucketService(
 	bucketRepository repositories.BucketRepository,
 	filesystem shared.Filesystem,
+	generateBucketPathService GenerateBucketPathServiceInputPort,
 ) *CreateBucketService {
 	return &CreateBucketService{
 		bucketRepository,
 		filesystem,
+		generateBucketPathService,
 	}
 }
 
@@ -28,10 +31,21 @@ func (serv *CreateBucketService) Do(
 ) (*entities.Bucket, error) {
 	bucketID := uuid.New().String()
 
-	//err := os.Mkdir(serv.storageRootFolder+"/"+bucketID, os.ModePerm)
-	err := serv.filesystem.MakeDirectory(bucketID)
-	if err != nil {
-		return nil, err
+	if parentID != nil {
+		parentPath, err := serv.generateBucketPathService.Do(*parentID)
+		if err != nil {
+			return nil, err
+		}
+
+		err = serv.filesystem.MakeDirectoryOnPath(bucketID, parentPath)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		err := serv.filesystem.MakeDirectory(bucketID)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	bucket, err := entities.NewBucket(bucketID, name, parentID)

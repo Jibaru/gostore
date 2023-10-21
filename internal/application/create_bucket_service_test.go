@@ -12,7 +12,8 @@ import (
 func TestCreateBucketWithEmptyParent(t *testing.T) {
 	ramBucketRepository := repositories.NewEmptyRamBucketRepository()
 	dummyFilesystem := shared.NewDummyFilesystem()
-	createBucketService := NewCreateBucketService(ramBucketRepository, dummyFilesystem)
+	bucketPathService := NewCallableGenerateBucketPathServiceForRootBucket()
+	createBucketService := NewCreateBucketService(ramBucketRepository, dummyFilesystem, bucketPathService)
 
 	bucket, err := createBucketService.Do("test_bucket", nil)
 
@@ -23,7 +24,8 @@ func TestCreateBucketWithEmptyParent(t *testing.T) {
 func TestCreateBucketWithEmptyNameFails(t *testing.T) {
 	ramBucketRepository := repositories.NewEmptyRamBucketRepository()
 	dummyFilesystem := shared.NewDummyFilesystem()
-	createBucketService := NewCreateBucketService(ramBucketRepository, dummyFilesystem)
+	bucketPathService := NewCallableGenerateBucketPathServiceForRootBucket()
+	createBucketService := NewCreateBucketService(ramBucketRepository, dummyFilesystem, bucketPathService)
 
 	bucket, err := createBucketService.Do("", nil)
 
@@ -34,7 +36,8 @@ func TestCreateBucketWithEmptyNameFails(t *testing.T) {
 func TestCreateBucketWithNotExistsParentFails(t *testing.T) {
 	ramBucketRepository := repositories.NewEmptyRamBucketRepository()
 	dummyFilesystem := shared.NewDummyFilesystem()
-	createBucketService := NewCreateBucketService(ramBucketRepository, dummyFilesystem)
+	bucketPathService := NewCallableGenerateBucketPathServiceForRootBucket()
+	createBucketService := NewCreateBucketService(ramBucketRepository, dummyFilesystem, bucketPathService)
 	parentID := uuid.New().String()
 
 	bucket, err := createBucketService.Do("test_bucket", &parentID)
@@ -53,7 +56,8 @@ func TestCreateBucketWithExistsParent(t *testing.T) {
 	})
 	ramBucketRepository := repositories.NewRamBucketRepository(buckets)
 	dummyFilesystem := shared.NewDummyFilesystem()
-	createBucketService := NewCreateBucketService(ramBucketRepository, dummyFilesystem)
+	bucketPathService := NewCallableGenerateBucketPathServiceForRootBucket()
+	createBucketService := NewCreateBucketService(ramBucketRepository, dummyFilesystem, bucketPathService)
 
 	bucket, err := createBucketService.Do("test_bucket", &parentID)
 
