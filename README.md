@@ -6,12 +6,13 @@
 
 ## Features
 
-| Feature                      | Method | Endpoint                     |
-|------------------------------|--------|------------------------------|
-| List Buckets                 | GET    | /buckets                     |
-| Create a Bucket              | POST   | /buckets                     |
-| Upload an Object to a Bucket | POST   | /buckets/{bucketID}/objects  |
-| Download an Object           | GET    | /objects/{objectID}/download |
+| Feature                                 | Method | Endpoint                     |
+|-----------------------------------------|--------|------------------------------|
+| List Buckets                            | GET    | /buckets                     |
+| Create a Bucket                         | POST   | /buckets                     |
+| Upload an Object to a Bucket            | POST   | /buckets/{bucketID}/objects  |
+| List Buckets in a first level of Bucket | GET    | /buckets/{bucketID}/buckets  |
+| Download an Object                      | GET    | /objects/{objectID}/download |
 
 # Database Implementations
 
