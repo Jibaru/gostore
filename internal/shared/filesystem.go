@@ -10,6 +10,7 @@ type Filesystem interface {
 	MakeDirectory(name string) error
 	MakeDirectoryOnPath(name string, relativePath string) error
 	MakeFileOnPath(name string, relativePath string) (*os.File, error)
+	DeleteFileOnPath(path string) error
 }
 
 type ServerFilesystem struct {
@@ -45,6 +46,10 @@ func (s *ServerFilesystem) MakeFileOnPath(name string, relativePath string) (*os
 	return os.Create(s.rootPath + relativePath + "/" + name)
 }
 
+func (s *ServerFilesystem) DeleteFileOnPath(relativePath string) error {
+	return os.Remove(s.rootPath + relativePath)
+}
+
 func (s *DummyFilesystem) MakeDirectory(name string) error {
 	return nil
 }
@@ -55,4 +60,8 @@ func (s *DummyFilesystem) MakeDirectoryOnPath(name string, relativePath string) 
 
 func (s *DummyFilesystem) MakeFileOnPath(name string, relativePath string) (*os.File, error) {
 	return &os.File{}, nil
+}
+
+func (s *DummyFilesystem) DeleteFileOnPath(relativePath string) error {
+	return nil
 }
