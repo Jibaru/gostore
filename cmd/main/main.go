@@ -59,6 +59,9 @@ func main() {
 	getBucketsInBucketServ := application.NewGetBucketsInBucketService(
 		bucketRepository,
 	)
+	getObjectsInBucketServ := application.NewGetObjectsInBucketService(
+		objectRepository,
+	)
 
 	e := echo.New()
 	e.Use(middleware.Logger())
@@ -66,6 +69,7 @@ func main() {
 	e.Static("/storage", storageFolderName)
 	e.POST("/buckets", controllers.NewCreateBucket(createBucketServ).Handle)
 	e.POST("/buckets/:bucketID/objects", controllers.NewCreateObject(createObjectServ).Handle)
+	e.GET("/buckets/:bucketID/objects", controllers.NewGetObjectsInBucket(getObjectsInBucketServ).Handle)
 	e.GET("/buckets", controllers.NewGetBuckets(getBucketsService).Handle)
 	e.GET("/buckets/:bucketID/buckets", controllers.NewGetBucketsInBucket(getBucketsInBucketServ).Handle)
 	e.GET("/objects/:objectID/download", controllers.NewDownloadObject(urlGenerator, generateObjectPathServ).Handle)
