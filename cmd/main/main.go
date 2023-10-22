@@ -2,7 +2,6 @@ package main
 
 import (
 	"github.com/jibaru/gostore/internal/application"
-	"github.com/jibaru/gostore/internal/domain/entities"
 	"github.com/jibaru/gostore/internal/infrastructure/controllers"
 	"github.com/jibaru/gostore/internal/infrastructure/repositories"
 	"github.com/jibaru/gostore/internal/shared"
@@ -25,24 +24,20 @@ func main() {
 	)
 	filesystem := shared.NewServerFilesystem("./" + storageFolderName)
 
-	buckets := make([]entities.Bucket, 0)
-	buckets = append(buckets, entities.Bucket{
-		ID:       "48fded16-34e8-45df-993d-6c0e39ca0308",
-		Name:     "test",
-		ParentID: nil,
-	})
+	bucketRepository, err := repositories.NewFileBucketRepository(storageFolderName + "/buckets.json")
+	if err != nil {
+		panic(err)
+		return
+	}
+	objectRepository, err := repositories.NewFileObjectRepository(storageFolderName + "/objects.json")
+	if err != nil {
+		panic(err)
+		return
+	}
 
-	objects := make([]entities.Object, 0)
-	objects = append(objects, entities.Object{
-		ID:        "4b3622bc-d5ec-4071-927c-b649611cdb18",
-		Name:      "imagen.png",
-		Extension: ".png",
-		BucketID:  "48fded16-34e8-45df-993d-6c0e39ca0308",
-	})
-
-	bucketRepository := repositories.NewRamBucketRepository(buckets)
-	objectRepository := repositories.NewRamObjectRepository(objects)
-
+	getBucketsService := application.NewGetBucketsService(
+		bucketRepository,
+	)
 	generateBucketPathServ := application.NewGenerateBucketPathService(
 		bucketRepository,
 	)
@@ -68,7 +63,7 @@ func main() {
 	e.Static("/storage", storageFolderName)
 	e.POST("/buckets", controllers.NewCreateBucket(createBucketServ).Handle)
 	e.POST("/buckets/:bucketID/objects", controllers.NewCreateObject(createObjectServ).Handle)
-	e.GET("/buckets", controllers.NewGetBuckets(bucketRepository).Handle)
+	e.GET("/buckets", controllers.NewGetBuckets(getBucketsService).Handle)
 	e.GET("/objects/:objectID/download", controllers.NewDownloadObject(urlGenerator, generateObjectPathServ).Handle)
 
 	e.Logger.Fatal(e.Start(address))
