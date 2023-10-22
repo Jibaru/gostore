@@ -1,24 +1,26 @@
 package controllers
 
 import (
-	"github.com/jibaru/gostore/internal/domain/repositories"
+	"github.com/jibaru/gostore/internal/application"
 	"github.com/jibaru/gostore/internal/infrastructure/controllers/dtos"
 	"github.com/labstack/echo/v4"
 	"net/http"
 )
 
 type GetBuckets struct {
-	bucketRepository repositories.BucketRepository
+	getBucketsService application.GetBucketServiceInputPort
 }
 
 func NewGetBuckets(
-	bucketRepository repositories.BucketRepository,
+	getBucketsService application.GetBucketServiceInputPort,
 ) *GetBuckets {
-	return &GetBuckets{bucketRepository}
+	return &GetBuckets{
+		getBucketsService,
+	}
 }
 
 func (ctrl *GetBuckets) Handle(c echo.Context) error {
-	buckets, err := ctrl.bucketRepository.GetAll()
+	buckets, err := ctrl.getBucketsService.Do()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, dtos.NewMessage(err.Error()))
 	}
