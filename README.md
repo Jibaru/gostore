@@ -14,6 +14,7 @@
 | List Buckets in a first level of Bucket | GET    | /buckets/{bucketID}/buckets  |
 | List Objects in a first level of Bucket | GET    | /buckets/{bucketID}/objects  |
 | Download an Object                      | GET    | /objects/{objectID}/download |
+| Delete an Object                        | DELETE | /objects/{objectID}          |
 
 # Database Implementations
 
