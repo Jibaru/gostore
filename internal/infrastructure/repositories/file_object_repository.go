@@ -40,6 +40,18 @@ func (r *FileObjectRepository) FindByID(ID string) (*entities.Object, error) {
 	return nil, errors.New("object not found")
 }
 
+func (r *FileObjectRepository) GetByBucketID(bucketID string) ([]entities.Object, error) {
+	objects := make([]entities.Object, 0)
+
+	for _, object := range r.objects {
+		if object.BucketID == bucketID {
+			objects = append(objects, object)
+		}
+	}
+
+	return objects, nil
+}
+
 func (r *FileObjectRepository) loadFromJSONFile() error {
 	if _, err := os.Stat(r.filePath); os.IsNotExist(err) {
 		r.objects = []entities.Object{}
