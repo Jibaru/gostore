@@ -10,11 +10,23 @@ type GenerateBucketPathService struct {
 	bucketRepository repositories.BucketRepository
 }
 
+type CallableGenerateBucketPathService struct {
+	onDo func(bucketID string) (string, error)
+}
+
 func NewGenerateBucketPathService(
 	bucketRepository repositories.BucketRepository,
 ) GenerateBucketPathServiceInputPort {
 	return &GenerateBucketPathService{
 		bucketRepository,
+	}
+}
+
+func NewCallableGenerateBucketPathServiceForRootBucket() GenerateBucketPathServiceInputPort {
+	return &CallableGenerateBucketPathService{
+		func(bucketID string) (string, error) {
+			return "/" + bucketID, nil
+		},
 	}
 }
 
@@ -34,4 +46,8 @@ func (serv *GenerateBucketPathService) Do(bucketID string) (string, error) {
 	}
 
 	return path + "/" + bucketID, nil
+}
+
+func (s *CallableGenerateBucketPathService) Do(bucketID string) (string, error) {
+	return s.onDo(bucketID)
 }
