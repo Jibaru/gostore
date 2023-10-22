@@ -6,19 +6,18 @@
 
 ## Features
 
-**List Buckets:**
-- Method: GET
-- Route: `/buckets`
+| Feature                      | Method | Endpoint                     |
+|------------------------------|--------|------------------------------|
+| List Buckets                 | GET    | /buckets                     |
+| Create a Bucket              | POST   | /buckets                     |
+| Upload an Object to a Bucket | POST   | /buckets/{bucketID}/objects  |
+| Download an Object           | GET    | /objects/{objectID}/download |
 
-**Create Bucket:**
-- Method: POST
-- Route: `/buckets`
+# Database Implementations
 
-**Upload an Object to a Bucket:**
-- Method: POST
-- Route: `/buckets/{bucketID}/objects`
+Store the information about buckets and objects as a metadata to process some requests simple as possible.
 
-**Download an Object:**
-
-- Method: GET
-- Route: `/objects/{objectID}/download`
+| Implementation | Description                |
+|----------------|----------------------------|
+| In Memory      | Uses server's RAM          |
+| File           | Uses a JSON representation |
