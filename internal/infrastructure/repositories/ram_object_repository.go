@@ -3,14 +3,13 @@ package repositories
 import (
 	"errors"
 	"github.com/jibaru/gostore/internal/domain/entities"
-	"github.com/jibaru/gostore/internal/domain/repositories"
 )
 
 type RamObjectRepository struct {
 	objects []entities.Object
 }
 
-func NewRamObjectRepository(objects []entities.Object) repositories.ObjectRepository {
+func NewRamObjectRepository(objects []entities.Object) *RamObjectRepository {
 	return &RamObjectRepository{objects: objects}
 }
 
@@ -39,4 +38,29 @@ func (r *RamObjectRepository) GetByBucketID(bucketID string) ([]entities.Object,
 	}
 
 	return objects, nil
+}
+
+func (r *RamObjectRepository) DeleteByID(objectID string) error {
+	objects := make([]entities.Object, 0)
+	objectDeleted := false
+
+	for _, object := range r.objects {
+		if object.ID != objectID {
+			objects = append(objects, object)
+		} else {
+			objectDeleted = true
+		}
+	}
+
+	if !objectDeleted {
+		return errors.New("object not found")
+	}
+
+	r.objects = objects
+
+	return nil
+}
+
+func (r *RamObjectRepository) Size() int {
+	return len(r.objects)
 }

@@ -52,6 +52,27 @@ func (r *FileObjectRepository) GetByBucketID(bucketID string) ([]entities.Object
 	return objects, nil
 }
 
+func (r *FileObjectRepository) DeleteByID(objectID string) error {
+	objects := make([]entities.Object, 0)
+	objectDeleted := false
+
+	for _, object := range r.objects {
+		if object.ID != objectID {
+			objects = append(objects, object)
+		} else {
+			objectDeleted = true
+		}
+	}
+
+	if !objectDeleted {
+		return errors.New("object not found")
+	}
+
+	r.objects = objects
+
+	return r.saveToJSONFile()
+}
+
 func (r *FileObjectRepository) loadFromJSONFile() error {
 	if _, err := os.Stat(r.filePath); os.IsNotExist(err) {
 		r.objects = []entities.Object{}
