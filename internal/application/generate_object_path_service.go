@@ -11,6 +11,10 @@ type GenerateObjectPathService struct {
 	generateBucketPathService GenerateBucketPathServiceInputPort
 }
 
+type CallableGenerateObjectPathService struct {
+	onDo func(objectID string) (string, error)
+}
+
 func NewGenerateObjectPathService(
 	objectRepository repositories.ObjectRepository,
 	generateBucketPathService GenerateBucketPathServiceInputPort,
@@ -18,6 +22,17 @@ func NewGenerateObjectPathService(
 	return &GenerateObjectPathService{
 		objectRepository,
 		generateBucketPathService,
+	}
+}
+
+func NewCallableGenerateObjectPathServiceForValidObject(
+	bucketID string,
+	extension string,
+) GenerateBucketPathServiceInputPort {
+	return &CallableGenerateBucketPathService{
+		func(objectID string) (string, error) {
+			return "/" + bucketID + "/" + objectID + extension, nil
+		},
 	}
 }
 

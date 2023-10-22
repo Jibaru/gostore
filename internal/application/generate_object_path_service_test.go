@@ -9,22 +9,6 @@ import (
 	"testing"
 )
 
-type CallableGenerateBucketPathService struct {
-	onDo func(bucketID string) (string, error)
-}
-
-func (s *CallableGenerateBucketPathService) Do(bucketID string) (string, error) {
-	return s.onDo(bucketID)
-}
-
-func NewCallableGenerateBucketPathServiceForRootBucket() GenerateBucketPathServiceInputPort {
-	return &CallableGenerateBucketPathService{
-		func(bucketID string) (string, error) {
-			return "/" + bucketID, nil
-		},
-	}
-}
-
 func TestGenerateObjectPathService(t *testing.T) {
 	objectID := uuid.New().String()
 	bucketID := uuid.New().String()
