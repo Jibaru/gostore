@@ -40,3 +40,15 @@ func (r *RamBucketRepository) FindByID(ID string) (*entities.Bucket, error) {
 
 	return nil, errors.New("bucket not found")
 }
+
+func (r *RamBucketRepository) GetByParentID(parentID string) ([]entities.Bucket, error) {
+	buckets := make([]entities.Bucket, 0)
+
+	for _, bucket := range r.buckets {
+		if bucket.ParentID != nil && *bucket.ParentID == parentID {
+			buckets = append(buckets, bucket)
+		}
+	}
+
+	return buckets, nil
+}

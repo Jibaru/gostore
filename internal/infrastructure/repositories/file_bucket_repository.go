@@ -44,6 +44,18 @@ func (r *FileBucketRepository) FindByID(ID string) (*entities.Bucket, error) {
 	return nil, errors.New("bucket not found")
 }
 
+func (r *FileBucketRepository) GetByParentID(parentID string) ([]entities.Bucket, error) {
+	buckets := make([]entities.Bucket, 0)
+
+	for _, bucket := range r.buckets {
+		if bucket.ParentID != nil && *bucket.ParentID == parentID {
+			buckets = append(buckets, bucket)
+		}
+	}
+
+	return buckets, nil
+}
+
 func (r *FileBucketRepository) loadFromJSONFile() error {
 	if _, err := os.Stat(r.filePath); os.IsNotExist(err) {
 		r.buckets = []entities.Bucket{}
