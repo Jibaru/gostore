@@ -62,6 +62,11 @@ func main() {
 	getObjectsInBucketServ := application.NewGetObjectsInBucketService(
 		objectRepository,
 	)
+	deleteObjectServ := application.NewDeleteObjectService(
+		objectRepository,
+		generateObjectPathServ,
+		filesystem,
+	)
 
 	e := echo.New()
 	e.Use(middleware.Logger())
@@ -73,6 +78,7 @@ func main() {
 	e.GET("/buckets", controllers.NewGetBuckets(getBucketsService).Handle)
 	e.GET("/buckets/:bucketID/buckets", controllers.NewGetBucketsInBucket(getBucketsInBucketServ).Handle)
 	e.GET("/objects/:objectID/download", controllers.NewDownloadObject(urlGenerator, generateObjectPathServ).Handle)
+	e.DELETE("/objects/:objectID", controllers.NewDeleteObject(deleteObjectServ).Handle)
 
 	e.Logger.Fatal(e.Start(address))
 }
