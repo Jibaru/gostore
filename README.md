@@ -16,7 +16,7 @@
 | Download an Object                      | GET    | /objects/{objectID}/download |
 | Delete an Object                        | DELETE | /objects/{objectID}          |
 
-## Database Implementations
+## Repositories Implementations
 
 Store the information about buckets and objects as a metadata to process some requests simple as possible.
 
