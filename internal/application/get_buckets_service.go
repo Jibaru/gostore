@@ -1,6 +1,7 @@
 package application
 
 import (
+	"errors"
 	"github.com/jibaru/gostore/internal/domain/entities"
 	"github.com/jibaru/gostore/internal/domain/repositories"
 )
@@ -22,5 +23,14 @@ func NewGetBucketsService(
 }
 
 func (serv *GetBucketsService) Do() ([]entities.Bucket, error) {
-	return serv.bucketRepository.GetAll()
+	buckets, err := serv.bucketRepository.GetAll()
+	if err != nil {
+		return nil, err
+	}
+
+	if len(buckets) == 0 {
+		return nil, errors.New("buckets not found")
+	}
+
+	return buckets, nil
 }
