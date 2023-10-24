@@ -6,7 +6,7 @@
 
 ## Features
 
-| Feature                                 | Method | Endpoint                     |
+| Feature                                 | Method | Endpoint (/api/v1)           |
 |-----------------------------------------|--------|------------------------------|
 | List Buckets                            | GET    | /buckets                     |
 | Create a Bucket                         | POST   | /buckets                     |
