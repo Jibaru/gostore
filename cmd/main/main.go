@@ -72,13 +72,15 @@ func main() {
 	e.Use(middleware.Logger())
 
 	e.Static("/storage", storageFolderName)
-	e.POST("/buckets", controllers.NewCreateBucket(createBucketServ).Handle)
-	e.POST("/buckets/:bucketID/objects", controllers.NewCreateObject(createObjectServ).Handle)
-	e.GET("/buckets/:bucketID/objects", controllers.NewGetObjectsInBucket(getObjectsInBucketServ).Handle)
-	e.GET("/buckets", controllers.NewGetBuckets(getBucketsService).Handle)
-	e.GET("/buckets/:bucketID/buckets", controllers.NewGetBucketsInBucket(getBucketsInBucketServ).Handle)
-	e.GET("/objects/:objectID/download", controllers.NewDownloadObject(urlGenerator, generateObjectPathServ).Handle)
-	e.DELETE("/objects/:objectID", controllers.NewDeleteObject(deleteObjectServ).Handle)
+
+	api := e.Group("/api/v1")
+	api.POST("/buckets", controllers.NewCreateBucket(createBucketServ).Handle)
+	api.POST("/buckets/:bucketID/objects", controllers.NewCreateObject(createObjectServ).Handle)
+	api.GET("/buckets/:bucketID/objects", controllers.NewGetObjectsInBucket(getObjectsInBucketServ).Handle)
+	api.GET("/buckets", controllers.NewGetBuckets(getBucketsService).Handle)
+	api.GET("/buckets/:bucketID/buckets", controllers.NewGetBucketsInBucket(getBucketsInBucketServ).Handle)
+	api.GET("/objects/:objectID/download", controllers.NewDownloadObject(urlGenerator, generateObjectPathServ).Handle)
+	api.DELETE("/objects/:objectID", controllers.NewDeleteObject(deleteObjectServ).Handle)
 
 	e.Logger.Fatal(e.Start(address))
 }
