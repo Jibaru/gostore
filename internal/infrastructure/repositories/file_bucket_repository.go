@@ -56,6 +56,25 @@ func (r *FileBucketRepository) GetByParentID(parentID string) ([]entities.Bucket
 	return buckets, nil
 }
 
+func (r *FileBucketRepository) DeleteByID(ID string) error {
+	buckets := make([]entities.Bucket, 0)
+
+	for _, bucket := range r.buckets {
+		if bucket.ID != ID {
+			buckets = append(buckets, bucket)
+		}
+	}
+
+	r.buckets = buckets
+
+	err := r.saveToJSONFile()
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (r *FileBucketRepository) loadFromJSONFile() error {
 	if _, err := os.Stat(r.filePath); os.IsNotExist(err) {
 		r.buckets = []entities.Bucket{}

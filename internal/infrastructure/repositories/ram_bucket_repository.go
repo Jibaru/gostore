@@ -52,3 +52,19 @@ func (r *RamBucketRepository) GetByParentID(parentID string) ([]entities.Bucket,
 
 	return buckets, nil
 }
+
+func (r *RamBucketRepository) DeleteByID(ID string) error {
+	buckets := make([]entities.Bucket, 0)
+
+	for _, bucket := range r.buckets {
+		if bucket.ID != ID {
+			if bucket.ParentID != nil && *bucket.ParentID != ID {
+				buckets = append(buckets, bucket)
+			}
+		}
+	}
+
+	r.buckets = buckets
+
+	return nil
+}

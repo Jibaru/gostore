@@ -9,4 +9,5 @@ type BucketRepository interface {
 	GetAll() ([]entities.Bucket, error)
 	FindByID(ID string) (*entities.Bucket, error)
 	GetByParentID(parentID string) ([]entities.Bucket, error)
+	DeleteByID(ID string) error
 }
