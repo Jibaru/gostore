@@ -4,6 +4,27 @@
 
 <p align="center"><i>Simplistic and minimalist storage.</i></p>
 
+## Usage
+
+Run the application on a terminal. You can customize the execution using the following flags:
+
+```
+  -f string
+        storage folder name (alias) (default "storage")
+  -folder string
+        storage folder name (default "storage")
+  -h string
+        host (alias) (default "localhost")
+  -help
+        shows help
+  -host string
+        host (default "localhost")
+  -p int
+        port (alias) (default 80)
+  -port int
+        port (default 80)
+```
+
 ## Features
 
 | Feature                                 | Method | Endpoint (/api/v1)           |
