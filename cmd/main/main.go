@@ -67,6 +67,11 @@ func main() {
 		generateObjectPathServ,
 		filesystem,
 	)
+	deleteBucketServ := application.NewDeleteBucketService(
+		bucketRepository,
+		generateBucketPathServ,
+		filesystem,
+	)
 
 	e := echo.New()
 	e.Use(middleware.Logger())
@@ -81,6 +86,7 @@ func main() {
 	api.GET("/buckets/:bucketID/buckets", controllers.NewGetBucketsInBucket(getBucketsInBucketServ).Handle)
 	api.GET("/objects/:objectID/download", controllers.NewDownloadObject(urlGenerator, generateObjectPathServ).Handle)
 	api.DELETE("/objects/:objectID", controllers.NewDeleteObject(deleteObjectServ).Handle)
+	api.DELETE("/buckets/:bucketID", controllers.NewDeleteBucket(deleteBucketServ).Handle)
 
 	e.Logger.Fatal(e.Start(address))
 }
