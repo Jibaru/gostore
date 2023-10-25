@@ -1,20 +1,42 @@
 package main
 
 import (
+	"flag"
 	"github.com/jibaru/gostore/internal/application"
 	"github.com/jibaru/gostore/internal/infrastructure/controllers"
 	"github.com/jibaru/gostore/internal/infrastructure/repositories"
 	"github.com/jibaru/gostore/internal/shared"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"os"
 	"strconv"
 )
 
 func main() {
-	host := "localhost"
-	port := 80
+	var port int
+	var host string
+	var storageFolderName string
+	var showsHelp bool
+
+	flag.StringVar(&host, "h", "localhost", "host (alias)")
+	flag.StringVar(&host, "host", "localhost", "host")
+
+	flag.IntVar(&port, "p", 80, "port (alias)")
+	flag.IntVar(&port, "port", 80, "port")
+
+	flag.StringVar(&storageFolderName, "f", "storage", "storage folder name (alias)")
+	flag.StringVar(&storageFolderName, "folder", "storage", "storage folder name")
+
+	flag.BoolVar(&showsHelp, "help", false, "shows help")
+
+	flag.Parse()
+
+	if showsHelp {
+		flag.PrintDefaults()
+		os.Exit(0)
+	}
+
 	address := host + ":" + strconv.Itoa(port)
-	storageFolderName := "storage"
 
 	urlGenerator := shared.NewUrlGenerator(
 		"localhost",
