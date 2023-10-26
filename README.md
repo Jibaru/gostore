@@ -36,6 +36,7 @@ Run the application on a terminal. You can customize the execution using the fol
 | List Objects in a first level of Bucket | GET    | /buckets/{bucketID}/objects  |
 | Download an Object                      | GET    | /objects/{objectID}/download |
 | Delete an Object                        | DELETE | /objects/{objectID}          |
+| Delete a Bucket                         | DELETE | /buckets/{bucketID}          |
 
 ## Repositories Implementations
 
