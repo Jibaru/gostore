@@ -99,3 +99,7 @@ sequenceDiagram
     CreateBucketServ-->>-CreateBucketCtrl: bucket, error
     CreateBucketCtrl-->-main: response
 ```
+
+## Documentation
+
+You can see much explained docs at the [Wiki](https://github.com/Jibaru/gostore/wiki).
