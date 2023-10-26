@@ -4,9 +4,37 @@
 
 <p align="center"><i>Simplistic and minimalist storage.</i></p>
 
-## Usage
+## Get started
 
-Run the application on a terminal. You can customize the execution using the following flags:
+Download the latest version of gostore for your os.
+Make a directory at the same level of the binary.
+
+```bash
+$ mkdir storage
+$ ls
+  gostore_1.0.0_windows_amd64.exe*  storage/
+```
+
+Open a terminal an execute the application.
+Then, you can use the features' endpoints to interact with the storage api.
+
+```bash
+$ curl --location 'localhost:80/api/v1/buckets' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "name": "my bucket"
+  }'
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   109  100    82  100    27    821    270 --:--:-- --:--:-- --:--:--  1101{"id":"6893ee7a-d370-4120-8735-9be2329c788a","name":"my bucket","parent_id":null}
+
+$ ls storage/
+  17a0dba2-4e19-4acb-a890-d7283c659e81/  buckets.json
+```
+
+## Flags
+
+You can customize the execution using the following flags:
 
 ```
   -f string
