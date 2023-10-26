@@ -29,7 +29,7 @@ $ curl --location 'localhost:80/api/v1/buckets' \
 100   109  100    82  100    27    821    270 --:--:-- --:--:-- --:--:--  1101{"id":"6893ee7a-d370-4120-8735-9be2329c788a","name":"my bucket","parent_id":null}
 
 $ ls storage/
-  17a0dba2-4e19-4acb-a890-d7283c659e81/  buckets.json
+  6893ee7a-d370-4120-8735-9be2329c788a/  buckets.json
 ```
 
 ## Flags
