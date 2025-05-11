@@ -6,7 +6,7 @@
 
 ## Get started
 
-Download the latest version of gostore for your os.
+Download the latest version of gostore for your operating system.
 Make a directory at the same level of the binary.
 
 ```bash
